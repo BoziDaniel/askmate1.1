@@ -29,14 +29,14 @@ def route_expand_question(question_id):
 def add_question():
     """Add new question to list, then redirect to /list page"""
     if request.method == 'POST':
-        id = ut.genereate_new_id(question_path)
+        id_ = dm.generate_new_id(question_path)
         submission_time = int(time.time())
         view_number = 0
         vote_number = 0
         title = request.form["title"]
         message = request.form["message"]
         image = 0
-        new_question = [id, submission_time, view_number, vote_number, title, message, image]
+        new_question = [id_, submission_time, view_number, vote_number, title, message, image]
         cn.add_new_question(question_path, new_question)
         return redirect("/list")
     else:

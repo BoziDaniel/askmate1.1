@@ -1,16 +1,15 @@
 import connection as cn
 
 
-def genereate_new_id(file_path):
+def generate_new_id(file_path):
     sorted_questions = descending_sort_data_by_parameter(
-        (get_all_data_from_file(file_path)), 'submission_time')
+        (cn.get_all_data_from_file(file_path)), 'submission_time')
     newest_id = (sorted_questions[0])['id']
     new_id = int(newest_id)+1
     return new_id
 
 
 def descending_sort_data_by_parameter(data_to_be_sorted, parameter):
-    sorted_data = []
     sorted_data = sorted(data_to_be_sorted, key=lambda k: k[parameter], reverse=True)
     return sorted_data
 
