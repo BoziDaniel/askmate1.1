@@ -26,6 +26,11 @@
             {% endif %}
         {% endfor %}
         </p>
-
+        <form action="/answer" method="POST">
+            <label>
+                <textarea name="Comment" ROWS="5" COLS="30"></textarea>
+            </label>
+            <input type="submit" value="Post comment">
+        </form>
 </body>
 </html>

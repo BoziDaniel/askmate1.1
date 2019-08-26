@@ -8,7 +8,7 @@
 
 <body>
     <h1>Ask Mate</h1>
-    <a href="{{ url_for('add_question') }}">Ask new question</a>
+    <a href="add_question">Ask new question</a>
     {% for dict_item in sorted_questions %}
         <p>Question:<a href="/question/{{ dict_item['id'] }}">{{ dict_item['title'] }}</a></p>
     {% endfor %}
