@@ -37,10 +37,25 @@ def add_question():
         message = request.form["message"]
         image = 0
         new_question = [id_, submission_time, view_number, vote_number, title, message, image]
-        cn.add_new_question(question_path, new_question)
+        cn.add_new_data_to_csv(question_path, new_question)
         return redirect("/list")
     else:
         return render_template('add-question.html')
+
+
+@app.route('/add_answer', methods=["POST"])
+def add_answer():
+    if request.method == "POST":
+        new_answer = {
+            "id": dm.generate_new_id(answer_path),
+            "submission_time": int(time.time()),
+            "vote_number": "0",  
+            "question_id": request.form.get("question_id"),
+            "message": request.form.get("answer"),
+            "image": request.form.get("image"),
+        }
+        cn.add_new_data_to_csv(answer_path, new_answer)
+        return redirect("/question.html")
 
 
 if __name__ == '__main__':

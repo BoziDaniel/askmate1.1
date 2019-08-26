@@ -11,7 +11,7 @@ def get_all_data_from_file(file_path):
     return file_content   # list of dictonarys
 
 
-def add_new_question(file_path, list_of_data):
+def add_new_data_to_csv(file_path, list_of_data):
     with open(file_path, 'a') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(list_of_data)

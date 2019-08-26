@@ -1,7 +1,7 @@
 import connection as cn
 
 
-def generate_new_id(file_path):
+def generate_new_id(file_path): #át kéne írni általánosabban úgy, h az answer id-ra is jó legyen
     sorted_questions = descending_sort_data_by_parameter(
         (cn.get_all_data_from_file(file_path)), 'submission_time')
     newest_id = (sorted_questions[0])['id']
