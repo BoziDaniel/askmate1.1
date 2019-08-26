@@ -21,16 +21,24 @@
         {% endfor %}
 
         <p>{% for answer in answers %}
-            {% if answer['id'] == question_id %}
+            {% if answer['question_id'] == question_id %}
                 {{ answer['message'] }}
             {% endif %}
         {% endfor %}
         </p>
-        <form action="/answer" method="POST">
-            <label>
-                <textarea name="Comment" ROWS="5" COLS="30"></textarea>
-            </label>
-            <input type="submit" value="Post comment">
+
+
+
+
+        <form action="/add_answer" method="POST">
+            <label for answer>Add answer</label><br>
+                <textarea name="message" id="message" ROWS="5" COLS="30" minlength="10" ></textarea><br>
+            <input type="hidden" name="question_id" value="{{ user_story['id'] }}">
+            <input type="submit" value="Post answer">
         </form>
+
+
+
+
 </body>
 </html>
