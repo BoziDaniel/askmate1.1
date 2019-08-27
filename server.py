@@ -37,7 +37,7 @@ def expand_question(question_id):
             return redirect('/question/'+str(question_id))
 
 
-@app.route('/add-question', methods=['POST', 'GET'])
+@app.route('/add_question', methods=['POST', 'GET'])
 def add_question():
     """Add new question to list, then redirect to /list page"""
     if request.method == 'POST':
@@ -52,7 +52,7 @@ def add_question():
         cn.add_new_data_to_csv(question_path, new_question)
         return redirect('/list')
     else:
-        return render_template('add-question.html')
+        return render_template('add_question.html')
 
 
 if __name__ == '__main__':
