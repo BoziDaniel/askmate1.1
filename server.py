@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 import data_manager as dm
 import connection as cn
 import time
@@ -19,10 +19,22 @@ def route_list():
 
 
 @app.route('/question/<question_id>', methods=['POST', 'GET'])
-def route_expand_question(question_id):
-    all_questions = cn.get_all_data_from_file(question_path)
-    all_answers = cn.get_all_data_from_file(answer_path)
-    return render_template('question.html', question_id=question_id, answers=all_answers, questions=all_questions)
+def expand_question(question_id):
+    if request.method == 'GET':
+        all_questions = cn.get_all_data_from_file(question_path)
+        all_answers = cn.get_all_data_from_file(answer_path)
+        return render_template('question.html', question_id=question_id, answers=all_answers, questions=all_questions)
+    else:
+        if request.method == "POST":
+            id_ = int(dm.generate_new_id(answer_path))
+            submission_time = int(time.time())
+            vote_number = 0
+            question_id = request.form.get("question_id")
+            message = request.form.get("answer")
+            image = request.form.get("image")
+            new_answer = [id_, submission_time, vote_number, question_id, message, image]
+            cn.add_new_data_to_csv(answer_path, new_answer)
+            return redirect('/list')
 
 
 @app.route('/add-question', methods=['POST', 'GET'])
@@ -41,21 +53,6 @@ def add_question():
         return redirect("/list")
     else:
         return render_template('add-question.html')
-
-
-@app.route('/add_answer', methods=["POST"])
-def add_answer():
-    if request.method == "POST":
-        new_answer = {
-            "id": dm.generate_new_id(answer_path),
-            "submission_time": int(time.time()),
-            "vote_number": "0",  
-            "question_id": request.form.get("question_id"),
-            "message": request.form.get("answer"),
-            "image": request.form.get("image"),
-        }
-        cn.add_new_data_to_csv(answer_path, new_answer)
-        return redirect("/question.html")
 
 
 if __name__ == '__main__':

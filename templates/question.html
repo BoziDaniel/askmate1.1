@@ -22,25 +22,17 @@
 
         <p>{% for answer in answers %}
             {% if answer['question_id'] == question_id %}
-               Answer {{ answer['id'] }}: {{ answer['message'] }}<br>
+               Answer: {{ answer['message'] }}<br>
             {% endif %}
         {% endfor %}
         </p>
-
-
-
-
-        <form action='add_answer' method="POST">
+        <form action='question.html' method="POST">
             <label for="answer">Add answer</label><br>
                 <textarea name="answer" id="answer" ROWS="5" COLS="30" minlength="10" required ></textarea><br>
-            <input type="hidden" name="question_id" value="{{ question_id }}>
+            <input type="hidden" name="question_id" value="{{ question_id }}">
             <label for="image">Link an image<br></label>
                 <input type="URL" name="image" id="image">
             <input type="submit" value="Post answer">
         </form>
-
-
-
-
 </body>
 </html>
