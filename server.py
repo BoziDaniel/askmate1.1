@@ -34,7 +34,7 @@ def expand_question(question_id):
             image = request.form.get("image")
             new_answer = [id_, submission_time, vote_number, question_id, message, image]
             cn.add_new_data_to_csv(answer_path, new_answer)
-            return redirect('/list')
+            return redirect('/question/'+str(question_id))
 
 
 @app.route('/add-question', methods=['POST', 'GET'])
@@ -50,7 +50,7 @@ def add_question():
         image = 0
         new_question = [id_, submission_time, view_number, vote_number, title, message, image]
         cn.add_new_data_to_csv(question_path, new_question)
-        return redirect("/list")
+        return redirect('/list')
     else:
         return render_template('add-question.html')
 
