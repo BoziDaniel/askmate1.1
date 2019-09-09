@@ -12,10 +12,8 @@ answer_path = "sample_data/answer.csv"
 @app.route('/')
 @app.route('/list', methods=['POST', 'GET'])
 def route_list():
-    """Show list of questions, sorted by the latest question on top"""
-    unordered_questions = cn.get_all_data_from_file(question_path)
-    sorted_questions = dm.descending_sort_data_by_parameter(unordered_questions, 'submission_time')
-    return render_template('list.html', sorted_questions=sorted_questions)
+    data = dm.display_questions()
+    return render_template('list.html', sorted_questions=data)
 
 
 @app.route('/question/<question_id>', methods=['POST', 'GET'])

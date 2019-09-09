@@ -1,18 +1,48 @@
-import csv
+import psycopg2
+import psycopg2.extras
 
 
-def get_all_data_from_file(file_path):
-    file_content = []
-    with open(file_path, encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            row_in_file = dict(row)
-            file_content.append(row_in_file)
-    return file_content   # list of dictonarys
+def get_connection_string():
+    # setup connection string
+    # to do this, please define these environment variables first
+    user_name = 'jency'
+    password = '4b109f26'
+    host = 'localhost'
+    database_name = 'askmate2'
+
+    env_variables_defined = user_name and password and host and database_name
+
+    if env_variables_defined:
+        # this string describes all info for psycopg2 to connect to the database
+        return 'postgresql://{user_name}:{password}@{host}/{database_name}'.format(
+            user_name=user_name,
+            password=password,
+            host=host,
+            database_name=database_name
+        )
+    else:
+        raise KeyError('Some necessary environment variable(s) are not defined')
 
 
-def add_new_data_to_csv(file_path, list_of_data):
-    with open(file_path, 'a') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(list_of_data)
+def open_database():
+    try:
+        connection_string = get_connection_string()
+        connection = psycopg2.connect(connection_string)
+        connection.autocommit = True
+    except psycopg2.DatabaseError as exception:
+        print('Database connection problem')
+        raise exception
+    return connection
 
+
+def connection_handler(function):
+    def wrapper(*args, **kwargs):
+        connection = open_database()
+        # we set the cursor_factory parameter to return with a RealDictCursor cursor (cursor which provide dictionaries)
+        dict_cur = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        ret_value = function(dict_cur, *args, **kwargs)
+        dict_cur.close()
+        connection.close()
+        return ret_value
+
+    return wrapper
