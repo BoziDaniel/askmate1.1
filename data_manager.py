@@ -2,11 +2,28 @@ import connection as cn
 from datetime import datetime
 
 @cn.connection_handler
-def display_questions(cursor, table):
+def display_table(cursor, table):
     query = f"""SELECT * FROM {table}"""
     cursor.execute(query)
     data = cursor.fetchall()
     return data
+
+
+@cn.connection_handler
+def get_question_by_id(cursor, id):
+    query = f"""SELECT * FROM question WHERE id = {id}"""
+    cursor.execute(query)
+    data = cursor.fetchall()
+    return data
+
+
+@cn.connection_handler
+def get_answer_by_id(cursor, question_id):
+    query = f"""SELECT * FROM answer WHERE question_id = {question_id}"""
+    cursor.execute(query)
+    data = cursor.fetchall()
+    return data
+
 
 def get_next_id(cursor, table):
     query = f"""SELECT id FROM {table} ORDER BY id DESC LIMIT 1"""
@@ -29,5 +46,5 @@ def check_current_time(data):
 
 
 @cn.connection_handler
-def add_new_data_to_table(cursor, table):
+def add_new_row_to_table(cursor, table):
     pass

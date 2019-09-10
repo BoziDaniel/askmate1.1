@@ -12,12 +12,15 @@ answer_path = "sample_data/answer.csv"
 @app.route('/')
 @app.route('/list', methods=['POST', 'GET'])
 def route_list():
-    data = dm.display_questions('question')
+    data = dm.display_table('question')
     return render_template('list.html', sorted_questions=data)
 
 
-# @app.route('/question/<question_id>', methods=['POST', 'GET'])
-# def expand_question(question_id):
+@app.route('/question/<question_id>', methods=['POST', 'GET'])
+def expand_question(question_id):
+    question = dm.get_question_by_id(question_id)
+    answers_by_question_id = dm.get_answer_by_id(question_id)
+    return render_template('question.html', question=question, answers=answers_by_question_id)
     # if request.method == 'GET':
     #     all_questions = cn.get_all_data_from_file(question_path)
     #     all_answers = cn.get_all_data_from_file(answer_path)
