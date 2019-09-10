@@ -1,5 +1,6 @@
 import connection as cn
 from datetime import datetime
+import time
 
 @cn.connection_handler
 def display_table(cursor, table):
@@ -25,7 +26,7 @@ def get_answer_by_id(cursor, question_id):
     return data
 
 
-def get_next_id(cursor, table):
+def get_last_id(cursor, table):
     query = f"""SELECT id FROM {table} ORDER BY id DESC LIMIT 1"""
     cursor.execute(query)
     last_id = cursor.fetchone()
@@ -53,3 +54,14 @@ def add_new_question_to_table(cursor, data):
                    {'submission_time': data['submission_time'], 'view_number' : data['view_number'],
                    'vote_number' : data['vote_number'], 'title' : data['title'],
                    'message' : data['message'], 'image' : data['image']});
+
+
+def add_new_answer_to_table(cursor, question_id, answer, image):
+    time_ = int(time.time())
+    print(answer)
+    query = f"""INSERT INTO answer (submission_time, vote_number, question_id, message, image)
+            VALUES ({time_}, '0', '{question_id}', {answer}, {image});"""
+    cursor.execute(query)
+    data = cursor.fetchall()
+    return data
+
