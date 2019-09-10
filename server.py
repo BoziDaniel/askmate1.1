@@ -5,9 +5,6 @@ import time
 
 app = Flask(__name__)
 
-question_path = "sample_data/question.csv"
-answer_path = "sample_data/answer.csv"
-
 
 @app.route('/')
 @app.route('/list', methods=['POST', 'GET'])
@@ -18,7 +15,6 @@ def route_list():
 
 @app.route('/question/<question_id>', methods=['GET'])
 def expand_question(question_id):
-
     question = dm.get_question_by_id(question_id)
     answers_by_question_id = dm.get_answer_by_id(question_id)
     return render_template('question.html', question=question, answers=answers_by_question_id, question_id=question_id)
@@ -32,6 +28,17 @@ def add_answer(question_id):
         data = dm.check_current_time(data)
         dm.add_new_answer_to_table(data)
         return redirect(url_for('expand_question', question_id=question_id))
+
+
+@app.route('/add_question', methods=['POST', 'GET'])
+def route_add_question():
+    if request.method == 'POST':
+        data = request.form
+        data = dict(data)
+        data = dm.check_current_time(data)
+        dm.add_new_question_to_table(data)
+        return redirect(url_for('route_list'))
+    return render_template('add_question.html')
 
 
 if __name__ == '__main__':
