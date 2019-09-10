@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "layout.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Ask-Mate</title>
-</head>
-
-<body>
+{% block content %}
     <h1>Ask Mate</h1>
     <a href="add_question">Ask new question</a>
     {% for dict_item in sorted_questions %}
         <p><a href="/question/{{ dict_item['id'] }}">{{ dict_item['title'] }}</a></p>
     {% endfor %}
-</body>
-
-</html>
+{% endblock %}
 

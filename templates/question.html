@@ -1,46 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Question</title>
-</head>
-<body>
-{% for que in question %}
-    <table>
-        <tr>
-            <th>{{ que["id"] }} </th>
-            <th>{{ que["submission_time"] }} </th>
-            <th>{{ que["view_number"] }} </th>
-            <th>{{ que["vote_number"] }} </th>
-            <th>{{ que["title"] }} </th>
-            <th>{{ que["message"] }} </th>
-            <th>{{ que["image"] }} </th>
-        </tr>
-    </table>
-{% endfor %}
+{% extends "layout.html" %}
 
-<p>
-    {% for answer in answers %}
+{% block content %}
+    {% for que in question %}
         <table>
             <tr>
-                <th>{{ answer["id"] }} </th>
-                <th>{{ answer["submission_time"] }} </th>
-                <th>{{ answer["view_number"] }} </th>
-                <th>{{ answer["vote_number"] }} </th>
-                <th>{{ answer["title"] }} </th>
-                <th>{{ answer["message"] }} </th>
-                <th>{{ answer["image"] }} </th>
+                <th>{{ que["id"] }} </th>
+                <th>{{ que["submission_time"] }} </th>
+                <th>{{ que["view_number"] }} </th>
+                <th>{{ que["vote_number"] }} </th>
+                <th>{{ que["title"] }} </th>
+                <th>{{ que["message"] }} </th>
+                <th>{{ que["image"] }} </th>
             </tr>
         </table>
     {% endfor %}
-</p>
-<form action='question.html' method="POST">
-    <label for="answer">Add answer</label><br>
-    <textarea name="answer" id="answer" ROWS="5" COLS="30" minlength="10" required></textarea><br>
-    <input type="hidden" name="question_id" value="{{ question_id }}">
-    <label for="image">Link an image<br></label>
-    <input type="URL" name="image" id="image">
-    <input type="submit" value="Post answer">
-</form>
-</body>
-</html>
+
+    <p>
+        {% for answer in answers %}
+            <table>
+                <tr>
+                    <th>{{ answer["id"] }} </th>
+                    <th>{{ answer["submission_time"] }} </th>
+                    <th>{{ answer["view_number"] }} </th>
+                    <th>{{ answer["vote_number"] }} </th>
+                    <th>{{ answer["title"] }} </th>
+                    <th>{{ answer["message"] }} </th>
+                    <th>{{ answer["image"] }} </th>
+                </tr>
+            </table>
+        {% endfor %}
+    </p>
+    <form action='question.html' method="POST">
+        <label for="answer">Add answer</label><br>
+        <textarea name="answer" id="answer" ROWS="5" COLS="30" minlength="10" required></textarea><br>
+        <input type="hidden" name="question_id" value="{{ question_id }}">
+        <label for="image">Link an image<br></label>
+        <input type="URL" name="image" id="image">
+        <input type="submit" value="Post answer">
+    </form>
+    {% include 'footer.html' %}
+{% endblock %}
