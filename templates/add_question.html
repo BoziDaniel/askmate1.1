@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Ask-Mate</title>
-</head>
+{% extends "layout.html" %}
 
-<body>
-    <h1>Add new question</h1>
-
+{% block content %}
     <form action="/add_question" method='POST'>
         <p>
           <label for="title">Question title</label><br>
@@ -19,7 +12,4 @@
         </p>
         <p><input type="submit" id="submit" value="submit"></p>
     </form>
-
-</body>
-
-</html>
+{% endblock %}

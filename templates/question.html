@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Question</title>
-</head>
-<body>
+{% extends "layout.html" %}
+
+{% block content %}
     {% for question in questions %}
             {% if question['id'] == question_id  %}
                 <table>
@@ -34,5 +30,4 @@
                 <input type="URL" name="image" id="image">
             <input type="submit" value="Post answer">
         </form>
-</body>
-</html>
+{% endblock %}
