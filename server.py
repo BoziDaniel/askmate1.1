@@ -38,9 +38,17 @@ def expand_question(question_id):
     #         return redirect('/question/'+str(question_id))
 
 
+
+
 @app.route('/add_question', methods=['POST', 'GET'])
 def route_add_question():
-    pass
+    if request.method == 'POST':
+        data = request.form
+        data = dict(data)
+        data = dm.check_current_time(data)
+        dm.add_new_question_to_table(data)
+        return redirect(url_for('route_list'))
+    return render_template('add_question.html')
 
 
 if __name__ == '__main__':

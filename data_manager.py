@@ -46,5 +46,10 @@ def check_current_time(data):
 
 
 @cn.connection_handler
-def add_new_row_to_table(cursor, table):
-    pass
+def add_new_question_to_table(cursor, data):
+    cursor.execute("""
+    INSERT INTO question (submission_time, view_number, vote_number, title, message, image) 
+    VALUES (%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s)""",
+                   {'submission_time': data['submission_time'], 'view_number' : data['view_number'],
+                   'vote_number' : data['vote_number'], 'title' : data['title'],
+                   'message' : data['message'], 'image' : data['image']});
