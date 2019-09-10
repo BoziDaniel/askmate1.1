@@ -26,11 +26,12 @@ def expand_question(question_id):
 
 @app.route('/question/<question_id>', methods=['POST'])
 def add_answer(question_id):
-    message = request.form.get("answer")
-    print(message)
-    image = request.form.get("image")
-    dm.add_new_answer_to_table(question_id, message, image)
-    return redirect(url_for('expand_question', question_id=question_id))
+    if request.method == 'POST':
+        data = request.form
+        data = dict(data)
+        data = dm.check_current_time(data)
+        dm.add_new_answer_to_table(data)
+        return redirect(url_for('expand_question', question_id=question_id))
 
 
 if __name__ == '__main__':

@@ -47,11 +47,7 @@ def check_current_time(data):
 
 
 @cn.connection_handler
-def add_new_answer_to_table(cursor, question_id, answer, image):
-    time_ = int(time.time())
-    print(answer)
+def add_new_answer_to_table(cursor, data):
     query = f"""INSERT INTO answer (submission_time, vote_number, question_id, message, image)
-            VALUES ({time_}, '0', '{question_id}', {answer}, {image});"""
+            VALUES ('{data["submission_time"]}', '{data["vote_number"]}', '{data["question_id"]}', '{data["message"]}', '{data["image"]}');"""
     cursor.execute(query)
-    data = cursor.fetchall()
-    return data
