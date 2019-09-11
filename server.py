@@ -47,6 +47,7 @@ def delete_question(question_id):
     dm.delete_question(question_id)
     return redirect(url_for('route_list'))
 
+
 @app.route('/question/<question_id>/new-comment')
 def comment_question(question_id, ):
     pass
