@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <form action='{{ url_for('comment_question', question_id=question_id) }}' method="POST">
+            <label for="comment_to question">Comment</label><br>
+            <input name="comment_question" id="comment_question"  minlenght 3 required><br>
+            <input type="hidden" name="question_id" value="{{ question_id }}">
+            <input type="submit" value="Comment">
+        </form>
+{% endblock %}

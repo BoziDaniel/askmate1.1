@@ -13,6 +13,7 @@
                 <th>{{ que["image"] }} </th>
             </tr>
         </table>
+
     {% endfor %}
 
     <p>
@@ -30,6 +31,12 @@
             </table>
         {% endfor %}
     </p>
+
+    <a href='/question/{{ question_id }}/delete'>
+        <img src="https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-waste-icon-png-image_4147110.jpg"
+             alt="Delete question and all answers" style="width:35px;height:35px;border:0;">
+    </a>
+
     <form action={{ url_for("add_answer", question_id=question_id) }} method="POST">
         <label for="answer">Add answer</label><br>
         <textarea name="message" id="answer" ROWS="5" COLS="30" minlength="10" required></textarea><br>
