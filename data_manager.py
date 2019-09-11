@@ -105,3 +105,21 @@ def display_latest_questions(cursor):
     latest_questions = cursor.fetchall()
     return latest_questions
 
+
+@cn.connection_handler
+def get_all_comments_to_a_question(cursor, question_id):
+    query = f"""SELECT submission_time, message FROM comment
+            WHERE question_id={question_id}"""
+    cursor.execute(query)
+    comments_to_a_question = cursor.fetchall()
+    return comments_to_a_question
+
+
+@cn.connection_handler
+def add_comment_to_question(cursor, data):
+    query = f"""INSERT INTO comment (question_id, message, submission_time)
+                VALUES ('{data["question_id"]}', '{data["comment"]}', 
+                        '{data["submission_time"]}')"""
+    cursor.execute(query)
+
+

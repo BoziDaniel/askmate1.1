@@ -22,11 +22,24 @@
                 <th>Vote {{ que["view_number"] }} </th>
             </tr>
         </table>
-
+        <form action='{{ url_for('route_comment_question', question_id=question_id) }}' method="POST">
+            <label for="comment">Write a comment</label><br>
+            <input type="text" name="comment" id="comment" minlength="3" required><br>
+            <input type="hidden" name="question_id" value="{{ question_id }}">
+            <input type="submit" value="Post comment"><br>
+        </form>
     {% endfor %}
+    <p>{% for comment in comments %}
+            {{ comment['submission_time'] }}<br>
+            {{ comment['message'] }}
+        {% endfor %}
+    </p>
+
     <a href='/question/{{ question_id }}/delete'>
         <img src="https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-waste-icon-png-image_4147110.jpg"
-             alt="Delete question and all answers" style="width:35px;height:35px;border:0;"></a>
+             alt="Delete question and all answers" style="width:35px;height:35px;border:0;">
+    </a>
+
     <p>
         {% for answer in answers %}
             <table>
@@ -45,15 +58,15 @@
             </table>
         {% endfor %}
     </p>
+
     <form action={{ url_for("route_add_answer", question_id=question_id) }} method="POST">
-        <form action={{ url_for("route_add_answer", question_id=question_id) }} method="POST">
-            <label for="answer">Add answer</label><br>
-            <textarea name="message" id="answer" ROWS="5" COLS="30" minlength="10" required></textarea><br>
-            <input type="hidden" name="question_id" value="{{ question_id }}">
-            <input type="hidden" name="vote_number" value="0">
-            <label for="image">Link an image<br></label>
-            <input type="text" name="image" id="image">
-            <input type="submit" value="Post answer">
-        </form>
-        {% include 'footer.html' %}
+        <label for="answer">Add answer</label><br>
+        <textarea name="message" id="answer" ROWS="5" COLS="30" minlength="10" required></textarea><br>
+        <input type="hidden" name="question_id" value="{{ question_id }}">
+        <input type="hidden" name="vote_number" value="0">
+        <label for="image">Link an image<br></label>
+        <input type="text" name="image" id="image">
+        <input type="submit" value="Post answer">
+    </form>
+    {% include 'footer.html' %}
 {% endblock %}
