@@ -8,6 +8,13 @@ def display_table(cursor, table):
     cursor.execute(query)
     data = cursor.fetchall()
     return data
+'''
+    if sort_by == "submission_time" and order == "descending":
+        cursor.exexcute(""" SELECT * FROM question 
+        ORDER BY %s DESC
+        """)
+'''
+
 
 
 @cn.connection_handler
@@ -89,4 +96,12 @@ def delete_question(cursor, question_id):
                 WHERE question_id= {question_id};"""
     cursor.execute(query2)
     cursor.execute(query1)
+
+
+@cn.connection_handler
+def display_latest_questions(cursor):
+    cursor.execute("""
+                    SELECT id ,submission_time , title FROM question ORDER BY submission_time DESC LIMIT 5""")
+    latest_questions = cursor.fetchall()
+    return latest_questions
 

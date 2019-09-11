@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    {% for question in latest_questions %}
+        <table>
+            <tr>
+                <th>{{ question["submission_time"] }} </th>
+                <th><a href="{{ url_for('route_expand_question', question_id = question['id']) }}">{{ question["title"] }}</a></th>
+            </tr>
+        </table>
+    {% endfor %}
+    {% include 'footer.html' %}
+{% endblock %}
