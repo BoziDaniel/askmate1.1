@@ -79,3 +79,14 @@ def update_row_in_table(cursor, table, data):
                     "id"]}"""
 
     cursor.execute(query)
+
+
+@cn.connection_handler
+def delete_question(cursor, question_id):
+    query1 = f""" DELETE FROM question
+                WHERE id= {question_id};"""
+    query2 = f""" DELETE FROM answer
+                WHERE question_id= {question_id};"""
+    cursor.execute(query2)
+    cursor.execute(query1)
+

@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import data_manager as dm
-import connection as cn
-import time
+
 
 app = Flask(__name__)
 
@@ -29,7 +28,7 @@ def route_add_answer(question_id):
         data = dict(data)
         data = dm.check_current_time(data)
         dm.add_new_answer_to_table(data)
-        return redirect(url_for('expand_question', question_id=question_id))
+        return redirect(url_for('route_expand_question', question_id=question_id))
 
 
 @app.route('/add_question', methods=['POST', 'GET'])
@@ -43,12 +42,15 @@ def route_add_question():
     return render_template('add_question.html')
 
 
-@app.route('/question/<question_id>/delete', methods=['GET'])
+@app.route('/question/<question_id>/delete')
 def route_delete_question(question_id):
-    dm.delete_data_by_id("question", question_id)
-    return redirect(url_for("route_list"))
+    dm.delete_question(question_id)
+    return redirect(url_for('route_list'))
 
 
+@app.route('/question/<question_id>/new-comment')
+def comment_question(question_id, ):
+    pass
 
 
 if __name__ == '__main__':
