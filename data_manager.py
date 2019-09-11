@@ -63,3 +63,19 @@ def add_new_answer_to_table(cursor, data):
                     '{data["message"]}', '{data["image"]}');"""
     cursor.execute(query)
 
+
+@cn.connection_handler
+def delete_data_by_id(cursor, table, id):
+    query = f"""DELETE FROM {table} WHERE id = {id}"""
+    cursor.execute(query)
+
+
+@cn.connection_handler
+def update_row_in_table(cursor, table, data):
+    if table == "question":
+        query = f"""UPDATE question SET submission_time='{data["submission_time"]}',view_number={data[
+                    "view_number"]},vote_number={data["vote_number"]},title='{data["title"]}', message= '{data[
+                    "message"].replace("'", "''")}', image='{str(data["image"]).replace("None", "")}' WHERE id={data[
+                    "id"]}"""
+
+    cursor.execute(query)

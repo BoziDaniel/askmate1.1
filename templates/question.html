@@ -4,33 +4,46 @@
     {% for que in question %}
         <table>
             <tr>
-                <th>{{ que["id"] }} </th>
-                <th>{{ que["submission_time"] }} </th>
-                <th>{{ que["view_number"] }} </th>
-                <th>{{ que["vote_number"] }} </th>
-                <th>{{ que["title"] }} </th>
+                <th><h1>{{ que["title"] }}</h1></th>
+            </tr>
+            <tr>
                 <th>{{ que["message"] }} </th>
+            </tr>
+            <tr>
+                <th>Submission time: {{ que["submission_time"] }}</th>
+            </tr>
+            <tr>
                 <th>{{ que["image"] }} </th>
+            </tr>
+            <tr>
+                <th>View {{ que["vote_number"] }} </th>
+            </tr>
+            <tr>
+                <th>Vote {{ que["view_number"] }} </th>
             </tr>
         </table>
     {% endfor %}
-
+    <a href="{{ url_for("route_delete_question", question_id=question_id)}}">Delete question</a>
     <p>
         {% for answer in answers %}
             <table>
                 <tr>
-                    <th>{{ answer["id"] }} </th>
-                    <th>{{ answer["submission_time"] }} </th>
-                    <th>{{ answer["view_number"] }} </th>
-                    <th>{{ answer["vote_number"] }} </th>
-                    <th>{{ answer["title"] }} </th>
                     <th>{{ answer["message"] }} </th>
+                </tr>
+                <tr>
+                    <th>{{ answer["submission_time"] }} </th>
+                </tr>
+                <tr>
                     <th>{{ answer["image"] }} </th>
                 </tr>
+                <tr>
+                    <th>Vote {{ answer["vote_number"] }} </th>
+                </tr>
             </table>
+{#            <a href="{{ url_for("route_delete_answer", answer_id=answer_id)}}">Delete answer</a>#}
         {% endfor %}
     </p>
-    <form action={{ url_for("add_answer", question_id=question_id) }} method="POST">
+    <form action={{ url_for("route_add_answer", question_id=question_id) }} method="POST">
         <label for="answer">Add answer</label><br>
         <textarea name="message" id="answer" ROWS="5" COLS="30" minlength="10" required></textarea><br>
         <input type="hidden" name="question_id" value="{{ question_id }}">

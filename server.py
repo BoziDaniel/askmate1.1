@@ -14,14 +14,16 @@ def route_list():
 
 
 @app.route('/question/<question_id>', methods=['GET'])
-def expand_question(question_id):
+def route_expand_question(question_id):
     question = dm.get_question_by_id(question_id)
+    # question["view_number"] = int(question["view_number"]) + 1
+    # dm.update_row_in_table("question", question)
     answers_by_question_id = dm.get_answer_by_id(question_id)
     return render_template('question.html', question=question, answers=answers_by_question_id, question_id=question_id)
 
 
 @app.route('/question/<question_id>', methods=['POST'])
-def add_answer(question_id):
+def route_add_answer(question_id):
     if request.method == 'POST':
         data = request.form
         data = dict(data)
@@ -39,6 +41,14 @@ def route_add_question():
         dm.add_new_question_to_table(data)
         return redirect(url_for('route_list'))
     return render_template('add_question.html')
+
+
+@app.route('/question/<question_id>/delete', methods=['GET'])
+def route_delete_question(question_id):
+    dm.delete_data_by_id("question", question_id)
+    return redirect(url_for("route_list"))
+
+
 
 
 if __name__ == '__main__':

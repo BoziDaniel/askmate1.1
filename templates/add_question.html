@@ -12,9 +12,12 @@
         <p>
             <label for="message">Question</label><br>
             <input type="text" name="message" id="message" minlength="10" required>
+            </p>
+        <p>
+            <label for="image">Image</label><br>
             <input type="text" name="image" value="">
         </p>
         <p><input type="submit" id="submit" value="submit"></p>
-
     </form>
+    {% include 'footer.html' %}
 {% endblock %}
