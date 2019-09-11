@@ -41,6 +41,12 @@ def route_add_question():
     return render_template('add_question.html')
 
 
+@app.route('/latest_questions', methods=['GET', 'POST'])
+def route_latest_questions():
+    data = dm.display_latest_questions()
+    return render_template('latest_questions.html', latest_questions=data)
+
+
 if __name__ == '__main__':
     app.run(
         port=5000,

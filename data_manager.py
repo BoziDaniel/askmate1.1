@@ -63,3 +63,10 @@ def add_new_answer_to_table(cursor, data):
                     '{data["message"]}', '{data["image"]}');"""
     cursor.execute(query)
 
+
+@cn.connection_handler
+def display_latest_questions(cursor):
+    cursor.execute("""
+                    SELECT id ,submission_time , title FROM question ORDER BY id DESC LIMIT 5""")
+    latest_questions = cursor.fetchall()
+    return latest_questions
