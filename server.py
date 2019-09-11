@@ -55,7 +55,6 @@ def route_comment_question(question_id):
     data = dict(data)
     data = dm.check_current_time(data)
     dm.add_comment_to_question(data)
-    question_id = question_id
     return redirect(url_for('route_expand_question', question_id=question_id))
 
 
