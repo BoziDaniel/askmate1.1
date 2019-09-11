@@ -2,7 +2,18 @@
 
 {% block content %}
     <h1>Ask Mate</h1>
-    <a href="add_question">Ask new question</a>
+    <p><strong>Sort questions by</strong>
+        <select>
+            <option value="submission_time">date</option>
+            <option value="vote">vote</option>
+        </select>
+        <select>
+            <option value="ascending">ascending</option>
+            <option value="descending">descending</option>
+        </select>
+    </p>
+    <p></p><a href="add_question"><strong>Ask new question</strong></a></p>
+    <p><a href="latest_questions"><strong>HoTtEsT qUeStIoNs</strong></a></p>
     {% for dict_item in sorted_questions %}
         <p><a href="/question/{{ dict_item['id'] }}">{{ dict_item['title'] }}</a></p>
     {% endfor %}

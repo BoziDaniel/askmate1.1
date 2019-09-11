@@ -1,13 +1,19 @@
 import connection as cn
 from datetime import datetime
 
-
+'''
 @cn.connection_handler
-def display_table(cursor, table):
+def display_table(cursor, table, sort_by, order):
+    if sort_by == "submission_time" and order == "descending":
+        cursor.exexcute(""" SELECT * FROM question 
+        ORDER BY %s DESC
+        """)
+
     query = f"""SELECT * FROM {table}"""
     cursor.execute(query)
     data = cursor.fetchall()
     return data
+'''
 
 
 @cn.connection_handler
@@ -67,6 +73,6 @@ def add_new_answer_to_table(cursor, data):
 @cn.connection_handler
 def display_latest_questions(cursor):
     cursor.execute("""
-                    SELECT id ,submission_time , title FROM question ORDER BY id DESC LIMIT 5""")
+                    SELECT id ,submission_time , title FROM question ORDER BY submission_time DESC LIMIT 5""")
     latest_questions = cursor.fetchall()
     return latest_questions

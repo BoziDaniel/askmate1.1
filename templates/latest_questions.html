@@ -5,7 +5,7 @@
         <table>
             <tr>
                 <th>{{ question["submission_time"] }} </th>
-                <th><a href=>{{ question["title"] }}</a></th>
+                <th><a href="{{ url_for('expand_question', question_id = question['id']) }}">{{ question["title"] }}</a></th>
             </tr>
         </table>
     {% endfor %}
