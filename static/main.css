@@ -1,0 +1,106 @@
+h1 {
+    color: black;
+    font-style: italic;
+    font-variant: small-caps;
+}
+
+h2 {
+    padding: 15px;
+    margin-left: 14%;
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    background: #dcdcdc;
+}
+
+body {
+    background-color: white;
+}
+
+tr {
+    text-align: left;
+}
+
+button {
+    margin-top: 10px;
+}
+
+#back {
+    padding: 15px;
+    margin-left: 14%;
+}
+
+.extra_data {
+    font-size: small;
+    color: #8f8f8f;
+}
+
+.comments {
+    font-size: small;
+    color: #494949;
+}
+
+.sort1 {
+    margin-top: 10px;
+    margin-left: 60%;
+}
+
+.sort2 {
+    margin-top: 10px;
+}
+
+.button1 {
+    color: white;
+    position: relative;
+    top: 10px;
+    right: 15%;
+    padding: 6px 11px;
+    background-color: #8f8f8f;
+    border-radius: 6px;
+    border: black 2px solid;
+    margin-top: 10px;
+    margin-left: 30%;
+}
+
+
+.button2 {
+    color: white;
+    position: relative;
+    top: 10px;
+    right: 15%;
+    padding: 6px 11px;
+    background-color: #8f8f8f;
+    border-radius: 6px;
+    border: black 2px solid;
+    margin-top: 10px;
+}
+
+.header {
+    padding: 15px;
+    background-color: #313131;
+    color: white;
+    font-style: italic;
+    font-variant: small-caps;
+}
+
+.front_page_table {
+    text-align: left;
+    padding: 15px;
+    margin-left: 14%;
+}
+
+::selection {
+    color: yellow;
+    background: red;
+}
+
