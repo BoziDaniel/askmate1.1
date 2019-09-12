@@ -1,13 +1,16 @@
 {% extends "layout.html" %}
 
 {% block content %}
+    <h2>Latest Questions:</h2>
     {% for question in latest_questions %}
-        <table>
+        <table class="front_page_table">
             <tr>
-                <th>{{ question["submission_time"] }} </th>
                 <th><a href="{{ url_for('route_expand_question', question_id = question['id']) }}">{{ question["title"] }}</a></th>
+            </tr>
+            <tr>
+                <th class="extra_data">{{ question["submission_time"] }} </th>
             </tr>
         </table>
     {% endfor %}
-    {% include 'footer.html' %}
+    <a id="back" href="{{ url_for('route_list') }}">Back</a>
 {% endblock %}

@@ -1,21 +1,38 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h1>Ask Mate</h1>
-    <p><strong>Sort questions by</strong>
-        <select>
-            <option value="submission_time">date</option>
-            <option value="vote">vote</option>
-        </select>
-        <select>
-            <option value="ascending">ascending</option>
-            <option value="descending">descending</option>
-        </select>
+    <p>
+    <div>
+        <form>
+            <select class="sort1" name="order_by">
+                <option value="submission_time">Date</option>
+                <option value="vote">Vote</option>
+                <option value="view">View</option>
+                <option value="title">Title</option>
+            </select>
+            <select class="sort2" name="order_direction">
+                <option value="ascending">Ascending</option>
+                <option value="descending">Descending</option>
+            </select>
+            <button type="submit">Sort</button>
+        </form>
+    </div>
     </p>
-    <p></p><a href="add_question"><strong>Ask new question</strong></a></p>
-    <p><a href="latest_questions"><strong>HoTtEsT qUeStIoNs</strong></a></p>
-    {% for dict_item in sorted_questions %}
-        <p><a href="/question/{{ dict_item['id'] }}">{{ dict_item['title'] }}</a></p>
+    <a class="button1" href="add_question"><strong>Ask new question</strong></a>
+    <a class="button2" href="latest_questions"><strong>Hot Questions</strong></a>
+    {% for dict_item in questions %}
+        <table class="front_page_table">
+            <tr>
+                <th><a href="/question/{{ dict_item['id'] }}">{{ dict_item['title'] }}</a></th>
+            </tr>
+            <tr>
+                <td class="extra_data">{{ dict_item['submission_time'] }}</td>
+            </tr>
+            <tr>
+                <td class="extra_data">Views: {{ dict_item['view_number'] }}
+                    Votes: {{ dict_item['vote_number'] }}</td>
+            </tr>
+        </table>
     {% endfor %}
 {% endblock %}
 

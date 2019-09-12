@@ -8,13 +8,6 @@ def display_table(cursor, table):
     cursor.execute(query)
     data = cursor.fetchall()
     return data
-'''
-    if sort_by == "submission_time" and order == "descending":
-        cursor.exexcute(""" SELECT * FROM question 
-        ORDER BY %s DESC
-        """)
-'''
-
 
 
 @cn.connection_handler
@@ -41,13 +34,6 @@ def get_last_id(cursor, table):
     return next_id
 
 
-def replace_commas(data):
-    data = dict(data)
-    for column in data:
-        data[column] = data[column].replace("'", "''")
-    return data
-
-
 def check_current_time(data):
     data["submission_time"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     return data
@@ -57,10 +43,11 @@ def check_current_time(data):
 def add_new_question_to_table(cursor, data):
     cursor.execute("""
     INSERT INTO question (submission_time, view_number, vote_number, title, message, image) 
-    VALUES (%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s)""",
-                   {'submission_time': data['submission_time'], 'view_number' : data['view_number'],
-                   'vote_number' : data['vote_number'], 'title' : data['title'],
-                   'message' : data['message'], 'image' : data['image']});
+    VALUES (%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s,
+           %(image)s)""",
+                   {'submission_time': data['submission_time'], 'view_number': data['view_number'],
+                    'vote_number': data['vote_number'], 'title': data['title'],
+                    'message': data['message'], 'image': data['image']});
 
 
 @cn.connection_handler
@@ -78,14 +65,12 @@ def delete_data_by_id(cursor, table, id):
 
 
 @cn.connection_handler
-def update_row_in_table(cursor, table, data):
+def update_view_count(cursor, table, data):
     if table == "question":
-        query = f"""UPDATE question SET submission_time='{data["submission_time"]}',view_number={data[
-                    "view_number"]},vote_number={data["vote_number"]},title='{data["title"]}', message= '{data[
-                    "message"].replace("'", "''")}', image='{str(data["image"]).replace("None", "")}' WHERE id={data[
-                    "id"]}"""
-
-    cursor.execute(query)
+        view = data["view_number"]
+        id_ = data["id"]
+        query = f"""UPDATE question SET view_number = {view} WHERE id = {id_}"""
+        cursor.execute(query)
 
 
 @cn.connection_handler
@@ -105,3 +90,10 @@ def display_latest_questions(cursor):
     latest_questions = cursor.fetchall()
     return latest_questions
 
+
+@cn.connection_handler
+def sort_questions(cursor, order_by, order_direction):
+    query = f"SELECT * FROM question ORDER BY {order_by} {order_direction}"
+    cursor.execute(query)
+    data = cursor.fetchall()
+    return data
