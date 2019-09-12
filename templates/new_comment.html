@@ -1,10 +1,13 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <form action='{{ url_for('comment_question', question_id=question_id) }}' method="POST">
+    {% for que in question %}
+        {{ que['title'] }}<br>
+        {{ que['message'] }}<br>
+    {% endfor %}
+    <form action='{{ url_for('route_comment_question', question_id=question_id) }}' method="POST">
             <label for="comment_to question">Comment</label><br>
             <input name="comment_question" id="comment_question"  minlenght 3 required><br>
             <input type="hidden" name="question_id" value="{{ question_id }}">
             <input type="submit" value="Comment">
         </form>
-{% endblock %}

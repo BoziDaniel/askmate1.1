@@ -24,6 +24,34 @@
     <a href='/question/{{ question_id }}/delete'>
         <img src="https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-waste-icon-png-image_4147110.jpg"
              alt="Delete question and all answers" style="width:25px;height:25px;border:0;"></a>
+
+    <!--Delete question+answers and comments to the question -->
+    <form action='{{ url_for('route_comment_question', question_id=question_id) }}' method="POST">
+        <label for="comment">Write a comment</label><br>
+        <input type="text" name="comment" id="comment" minlength="3" required><br>
+        <input type="hidden" name="question_id" value="{{ question_id }}">
+        <input type="submit" value="Post comment"><br>
+    </form>
+
+
+    <!-- comments -->
+    <p>
+        {% for comment in comments %}
+            <table>
+                <tr>
+                    <td class="comments">{{ comment['message'] }}</td>
+                </tr>
+                <tr>
+                    <td class="extra_data">{{ comment['submission_time'] }}</td>
+                </tr>
+            </table>
+
+            <!-- delete comments -->
+            <a href="{{ url_for('route_delete_comment', comment_id=comment['id'] ) }}">
+                <img src="https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-waste-icon-png-image_4147110.jpg"
+                     alt="Delete comment" style="width:25px;height:25px;border:0;"></a><br>
+        {% endfor %}
+    </p>
     <p>
         {% for answer in answers %}
             <table>
@@ -39,10 +67,22 @@
                 <tr>
                     <th class="extra_data">{{ answer["image"] }} </th>
                 </tr>
+                <tr>
+                    <!--Delete answer + comments to it -->
+                </tr>
+                <tr>
+                    <th>
+                        <a href="{{ url_for('route_delete_answer', answer_id = answer["id"] ) }}">
+                            <img src="https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-waste-icon-png-image_4147110.jpg"
+                                 alt="Delete answer" style="width:25px;height:25px;border:0;"><br>
+                    </th>
+                    </a>
+                </tr>
             </table>
             <br>
         {% endfor %}
     </p>
+
     <form action={{ url_for("route_add_answer", question_id=question_id) }} method="POST">
         <label for="answer">Add answer</label><br>
         <textarea name="message" id="answer" ROWS="5" COLS="30" minlength="10" required></textarea><br>
