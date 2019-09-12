@@ -22,6 +22,13 @@
                 <th>Vote {{ que["view_number"] }} </th>
             </tr>
         </table>
+        <!--Delete question+answers and comments to the question -->
+        <p>
+            <a href='/question/{{ question_id }}/delete'>
+                <img src="https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-waste-icon-png-image_4147110.jpg"
+                     alt="Delete question and all answers" style="width:35px;height:35px;border:0;">Delete question
+            </a>
+        </p>
         <form action='{{ url_for('route_comment_question', question_id=question_id) }}' method="POST">
             <label for="comment">Write a comment</label><br>
             <input type="text" name="comment" id="comment" minlength="3" required><br>
@@ -29,17 +36,21 @@
             <input type="submit" value="Post comment"><br>
         </form>
     {% endfor %}
-    <p>{% for comment in comments %}
-            {{ comment['submission_time'] }}<br>
-            {{ comment['message'] }}
+
+    <!-- comments -->
+    <p>
+        {% for comment in comments %}
+            {{ comment['submission_time'] }}
+            {{ comment['message'] }}<br>
+            {{ comment['id'] }}<br>
+
+
+            <!-- delete comments -->
+            <a href="{{ url_for('route_delete_comment', comment_id=comment['id'] ) }}">
+                <img src="https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-waste-icon-png-image_4147110.jpg"
+                     alt="Delete comment" style="width:25px;height:25px;border:0;"></a><br>
         {% endfor %}
     </p>
-
-    <a href='/question/{{ question_id }}/delete'>
-        <img src="https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-waste-icon-png-image_4147110.jpg"
-             alt="Delete question and all answers" style="width:35px;height:35px;border:0;">
-    </a>
-
     <p>
         {% for answer in answers %}
             <table>
@@ -55,6 +66,14 @@
                 <tr>
                     <th>Vote {{ answer["vote_number"] }} </th>
                 </tr>
+                <tr>
+                    <!--Delete answer + comments to it -->
+                    <a href="{{ url_for('route_delete_answer', answer_id = answer["id"] ) }}">
+                        <img src="https://png.pngtree.com/png-clipart/20190630/original/pngtree-vector-waste-icon-png-image_4147110.jpg"
+                             alt="Delete answer" style="width:35px;height:35px;border:0;">Delete answer<br>
+                    </a>
+                </tr>
+                <tr>{{ answer['id'] }}</tr>
             </table>
         {% endfor %}
     </p>
