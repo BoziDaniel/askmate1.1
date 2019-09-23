@@ -3,7 +3,6 @@ import data_manager as dm
 
 
 app = Flask(__name__)
-
 OPTIONS = {
     "View": "view_number",
     "Vote": "vote_number",
@@ -15,14 +14,10 @@ OPTIONS = {
 
 
 @app.route('/')
-@app.route('/list', methods=['POST', 'GET'])
+@app.route('/list', methods=['POST'])
 def route_list():
-    try:
-        order_direction = OPTIONS[request.form.get("order_direction")]
-        order_by = OPTIONS[request.form.get("order_by")]
-    except KeyError:
-        order_direction = "DESC"
-        order_by = "submission_time"
+    order_direction = OPTIONS[request.form.get("order_direction", "Descending")]
+    order_by = OPTIONS[request.form.get("order_by", "Date")]
     sorted_questions = dm.sort_questions(order_by, order_direction)
     return render_template('list.html', questions=sorted_questions)
 
