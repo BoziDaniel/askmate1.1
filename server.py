@@ -104,6 +104,7 @@ def route_register_page():
 def route_register():
     username = request.form.get("username")
     password = request.form.get("password")
+    print(username, password)
     hashed_pw = dm.hash_password(password)
     dm.register_user(username, hashed_pw)
     return redirect(url_for('route_list'))

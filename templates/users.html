@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <table>
+    {% for user in users %}
+        <tr>
+            <td>{{ user["name"] }}</td>
+            <td>{{ user["date"] }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    {% include 'footer.html' %}
+{% endblock %}
