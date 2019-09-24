@@ -14,7 +14,7 @@ OPTIONS = {
 
 
 @app.route('/')
-@app.route('/list', methods=['POST'])
+@app.route('/list', methods=['GET', 'POST'])
 def route_list():
     order_direction = OPTIONS[request.form.get("order_direction", "Descending")]
     order_by = OPTIONS[request.form.get("order_by", "Date")]
@@ -93,6 +93,26 @@ def route_delete_answer(answer_id):
     question_id = question_id['question_id']
     dm.delete_answer(answer_id)
     return redirect(url_for('route_expand_question', question_id=question_id))
+
+
+@app.route('/register_page')
+def route_register_page():
+    return render_template('register.html')
+
+
+@app.route('/register', methods=['POST'])
+def route_register():
+    username = request.form.get("username")
+    password = request.form.get("password")
+    hashed_pw = dm.hash_password(password)
+    dm.register_user(username, hashed_pw)
+    return redirect(url_for('route_list'))
+
+
+@app.route('/list_users')
+def route_list_users():
+    users = dm.husszonnégytonnakokain()
+    return render_template('users.html', users=users)
 
 
 if __name__ == '__main__':

@@ -1,5 +1,17 @@
 import connection as cn
+import bcrypt
 from datetime import datetime
+from psycopg2 import sql
+
+
+def hash_password(plain_text_password):
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
 
 
 @cn.connection_handler
@@ -24,7 +36,6 @@ def get_answer_by_id(cursor, question_id):
     cursor.execute(query)
     data = cursor.fetchall()
     return data
-
 
 
 def check_current_time(data):
@@ -158,3 +169,19 @@ def get_question_id_by_answer_id(cursor, answer_id):
     question_id = cursor.fetchall()
     return question_id
 
+
+@cn.connection_handler
+def register_user(cursor, name_, password_):
+    date_ = datetime.now()
+    cursor.execute(
+       """INSERT INTO users (name, password, date)
+                    VALUES (%(name_)s, %(password_)s, %(date_)s)"""
+        ,{'name_': name_, 'password_': password_, 'date_': date_ })
+
+
+@cn.connection_handler
+def husszonnégytonnakokain(cursor):
+    query = "SELECT name, date FROM users"
+    cursor.execute(query)
+    users = cursor.fetchall()
+    return users

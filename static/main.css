@@ -87,8 +87,8 @@ button {
 
 .header {
     padding: 15px;
-    background-color: #313131;
-    color: white;
+    background-color: red;
+    color: yellow;
     font-style: italic;
     font-variant: small-caps;
 }

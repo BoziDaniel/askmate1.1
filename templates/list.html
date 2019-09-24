@@ -18,6 +18,8 @@
         </form>
     </div>
     </p>
+    <a href="{{ url_for('route_list_users') }}"><strong>All Users</strong></a>
+    <a href="{{ url_for('route_register_page') }}"><strong>Register</strong></a>
     <a class="button1" href="add_question"><strong>Ask new question</strong></a>
     <a class="button2" href="latest_questions"><strong>Hot Questions</strong></a>
     {% for dict_item in questions %}
