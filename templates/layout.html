@@ -9,6 +9,11 @@
 <h1 class="header">Ask Comrade</h1>
 {% if request.cookies.get('username') %}
     {{ request.cookies.get('username') }}
+    {#logout#}
+    <form action="/log_out" method="POST">
+        <button type="submit">log out</button>
+    </form>
+{% else %}
     <a href="{{ url_for('route_register_page') }}"><strong>Register</strong></a>
 
     <!-- login -->
@@ -19,11 +24,10 @@
         <input type="password" placeholder="password" minlength="3" name="password" id="password" required>
         <button type="submit">login</button>
     </form>
-    {#logout#}
-    <form action="/log_out" methods="POST">
-        <button type="submit">log out</button>
-    </form>
 {% endif %}
+
+
+
 {% block content %} {% endblock %}
 </body>
 </html>

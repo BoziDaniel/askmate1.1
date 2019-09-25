@@ -20,12 +20,8 @@ def route_list():
     order_direction = OPTIONS[request.form.get("order_direction", "Descending")]
     order_by = OPTIONS[request.form.get("order_by", "Date")]
     sorted_questions = dm.sort_questions(order_by, order_direction)
-    if 'username' in session:
-        logged_in = 'Logged in as Comrade %s' % escape(session['username'])
-        return render_template('list.html', questions=sorted_questions,logged_in=logged_in)
-    else:
-        not_logged_in = 'You are not logged in'
-        return render_template('list.html', questions=sorted_questions, logged_in=not_logged_in)
+    return render_template('list.html', questions=sorted_questions)
+
 
 
 @app.route('/question/<question_id>')
@@ -131,12 +127,15 @@ def route_login():
     if verification is True:
         redirect_to_index = redirect('/')
         response = make_response(redirect_to_index)
-        response.set_cookie('username', value='username')
+        response.set_cookie('username', value=username)
         return response
 
 
-
-
+@app.route('/log_out', methods=["POST"])
+def route_logout():
+    resp = make_response(redirect(url_for('route_list')))
+    resp.set_cookie('username', '', expires=0)
+    return resp
 
 
 if __name__ == '__main__':
