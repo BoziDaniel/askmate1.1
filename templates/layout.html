@@ -7,7 +7,23 @@
 </head>
 <body>
 <h1 class="header">Ask Comrade</h1>
+{% if request.cookies.get('username') %}
+    {{ request.cookies.get('username') }}
+    <a href="{{ url_for('route_register_page') }}"><strong>Register</strong></a>
 
+    <!-- login -->
+    <form action="/login" method="POST">
+        <label for="username">Username</label>
+        <input placeholder="user name" minlength="3" maxlength="15" name="username" id="username" required>
+        <label for="password">Password</label>
+        <input type="password" placeholder="password" minlength="3" name="password" id="password" required>
+        <button type="submit">login</button>
+    </form>
+    {#logout#}
+    <form action="/log_out" methods="POST">
+        <button type="submit">log out</button>
+    </form>
+{% endif %}
 {% block content %} {% endblock %}
 </body>
 </html>

@@ -10,7 +10,7 @@ def hash_password(plain_text_password):
 
 
 def verify_password(plain_text_password, hashed_password):
-    hashed_bytes_password = hashed_password.encode('utf-8')
+    hashed_bytes_password = hashed_password['password'].encode('utf-8')
     return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
 
 
@@ -181,7 +181,16 @@ def register_user(cursor, name_, password_):
 
 @cn.connection_handler
 def husszonnégytonnakokain(cursor):
+    """get all users"""
     query = "SELECT name, date FROM users"
     cursor.execute(query)
     users = cursor.fetchall()
     return users
+
+
+@cn.connection_handler
+def login_user(cursor, username):
+    cursor.execute("""SELECT password from users 
+     where name = %(username)s""", {'username': username})
+    hashed_pass = cursor.fetchone()
+    return hashed_pass

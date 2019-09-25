@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, escape, make_response
 import data_manager as dm
 
 
@@ -11,6 +11,7 @@ OPTIONS = {
     "Descending": "DESC",
     "Ascending": "ASC",
 }
+app.secret_key = b'GULAG'
 
 
 @app.route('/')
@@ -19,7 +20,12 @@ def route_list():
     order_direction = OPTIONS[request.form.get("order_direction", "Descending")]
     order_by = OPTIONS[request.form.get("order_by", "Date")]
     sorted_questions = dm.sort_questions(order_by, order_direction)
-    return render_template('list.html', questions=sorted_questions)
+    if 'username' in session:
+        logged_in = 'Logged in as Comrade %s' % escape(session['username'])
+        return render_template('list.html', questions=sorted_questions,logged_in=logged_in)
+    else:
+        not_logged_in = 'You are not logged in'
+        return render_template('list.html', questions=sorted_questions, logged_in=not_logged_in)
 
 
 @app.route('/question/<question_id>')
@@ -114,6 +120,23 @@ def route_register():
 def route_list_users():
     users = dm.husszonnégytonnakokain()
     return render_template('users.html', users=users)
+
+
+@app.route('/login', methods=["POST"])
+def route_login():
+    username = request.form.get("username")
+    password = request.form.get("password")
+    valid_pass = dm.login_user(username)
+    verification = dm.verify_password(password, valid_pass)
+    if verification is True:
+        redirect_to_index = redirect('/')
+        response = make_response(redirect_to_index)
+        response.set_cookie('username', value='username')
+        return response
+
+
+
+
 
 
 if __name__ == '__main__':

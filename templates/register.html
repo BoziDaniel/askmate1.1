@@ -3,7 +3,7 @@
 {% block content %}
     <form action="/register" method="post">
         <input name="username" placeholder="username" minlength="5" required><br>
-        <input name="password" placeholder="password" minlength="3" required><br>
+        <input type="password" name="password" placeholder="password" minlength="3" required><br>
         <button type="submit">Register</button>
     </form>
     {% include 'footer.html' %}
