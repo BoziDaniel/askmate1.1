@@ -33,8 +33,14 @@ def route_add_answer(question_id):
         data = request.form
         data = dict(data)
         data = dm.check_current_time(data)
-        dm.add_new_answer_to_table(data)
-        return redirect(url_for('route_expand_question', question_id=question_id))
+        try:
+            username = request.cookies.get('username')
+            dm.add_new_answer_to_table(data, username)
+            return redirect(url_for('route_expand_question', question_id=question_id))
+        except psycopg2.IntegrityError:
+            message = "You are not logged in!"
+            return render_template('question.html', message=message, question_id=question_id)
+    return redirect(url_for('route_expand_question', question_id=question_id))
 
 
 @app.route('/add_question', methods=['POST', 'GET'])
@@ -43,8 +49,13 @@ def route_add_question():
         data = request.form
         data = dict(data)
         data = dm.check_current_time(data)
-        dm.add_new_question_to_table(data)
-        return redirect(url_for('route_list'))
+        try:
+            username = request.cookies.get('username')
+            dm.add_new_question_to_table(data, username)
+            return redirect(url_for('route_list'))
+        except psycopg2.IntegrityError:
+            message = "You are not logged in!"
+            return render_template('add_question.html', message=message)
     return render_template('add_question.html')
 
 
@@ -56,13 +67,18 @@ def route_delete_question(question_id):
 
 @app.route('/question/<question_id>/new-comment', methods=['POST'])
 def route_comment_question(question_id):
-    print(question_id)
-    data = request.form
-    data = dict(data)
-    data = dm.check_current_time(data)
-    dm.add_comment_to_question(data)
-    comment_id = data['id']
-    return redirect(url_for('route_expand_question', question_id=question_id, comment_id=comment_id))
+    if request.method == 'POST':
+        data = request.form
+        data = dict(data)
+        data = dm.check_current_time(data)
+        try:
+            username = request.cookies.get('username')
+            dm.add_comment_to_question(data, username)
+            return redirect(url_for('route_expand_question', question_id=question_id))
+        except psycopg2.IntegrityError:
+            message = "You are not logged in!"
+            return render_template('question.html', message=message, question_id=question_id)
+    return redirect(url_for('route_expand_question', question_id=question_id))
 
 
 @app.route('/latest_questions', methods=['GET', 'POST'])
@@ -141,6 +157,7 @@ def route_search():
     search_phrase = request.form.get("search_phrase")
     search_result = dm.search_from_questions(search_phrase)
     return render_template('search.html', results=search_result)
+
 
 
 if __name__ == '__main__':

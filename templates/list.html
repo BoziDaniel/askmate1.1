@@ -23,7 +23,7 @@
         <button type="submit">Search</button>
     </form>
     </p>
-    <a href="{{ url_for('route_list_users') }}"><strong>All Users</strong></a>
+    <a href="{{ url_for('route_list_users') }}"><strong>List of KGB members</strong></a>
 
 
     <a class="button1" href="add_question"><strong>Ask new question</strong></a>
@@ -35,6 +35,9 @@
             </tr>
             <tr>
                 <td class="extra_data">{{ dict_item['submission_time'] }}</td>
+            </tr>
+            <tr>
+                <td class="extra_data">Posted by: {{ dict_item['name'] }}</td>
             </tr>
             <tr>
                 <td class="extra_data">Views: {{ dict_item['view_number'] }}

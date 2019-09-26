@@ -18,5 +18,8 @@
         </p>
         <p><input type="submit" id="submit" value="Submit"></p>
     </form>
+    {% if message %}
+        <h3>{{ message }}</h3>
+    {% endif %}
     {% include 'footer.html' %}
 {% endblock %}

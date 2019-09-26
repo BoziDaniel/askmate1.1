@@ -12,6 +12,9 @@
             <th class="extra_data">Submission time: {{ question["submission_time"] }}</th>
         </tr>
         <tr>
+            <th class="extra_data">Posted by: {{ question["name"] }}</th>
+        </tr>
+        <tr>
             <th class="extra_data">{{ question["image"] }} </th>
         </tr>
         <tr>
@@ -44,6 +47,9 @@
                 <tr>
                     <td class="extra_data">{{ comment['submission_time'] }}</td>
                 </tr>
+                <tr>
+                    <td class="extra_data">{{ comment['name'] }}</td>
+                </tr>
             </table>
 
             <!-- delete comments -->
@@ -63,6 +69,9 @@
                 </tr>
                 <tr>
                     <th class="extra_data">Votes: {{ answer["vote_number"] }} </th>
+                </tr>
+                <tr>
+                    <th class="extra_data">Posted by: {{ answer["name"] }}</th>
                 </tr>
                 <tr>
                     <th class="extra_data">{{ answer["image"] }} </th>

@@ -25,15 +25,18 @@ def display_table(cursor, table):
 
 @cn.connection_handler
 def get_question_by_id(cursor, id_):
-    cursor.execute("""SELECT * FROM question
-                        WHERE id= %(id)s""", {'id': id_})
+    cursor.execute("""SELECT question.*, users.name FROM question
+                        JOIN users ON users.id = question.user_id
+                        WHERE question.id = %(id)s""", {'id': id_})
     data = cursor.fetchall()
     return data
 
 
 @cn.connection_handler
 def get_answer_by_id(cursor, question_id):
-    query = f"""SELECT * FROM answer WHERE question_id = {question_id}"""
+    query = f"""SELECT answer.*, users.name FROM answer 
+    JOIN users ON users.id = answer.user_id
+     WHERE question_id = {question_id}"""
     cursor.execute(query)
     data = cursor.fetchall()
     return data
@@ -45,21 +48,23 @@ def check_current_time(data):
 
 
 @cn.connection_handler
-def add_new_question_to_table(cursor, data):
+def add_new_question_to_table(cursor, data, username):
+    user_id = get_user_id_by_username(username)
     cursor.execute("""
-    INSERT INTO question (submission_time, view_number, vote_number, title, message, image) 
+    INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id) 
     VALUES (%(submission_time)s, %(view_number)s, %(vote_number)s, %(title)s, %(message)s,
-           %(image)s)""",
+           %(image)s, %(user_id)s)""",
                    {'submission_time': data['submission_time'], 'view_number': data['view_number'],
                     'vote_number': data['vote_number'], 'title': data['title'],
-                    'message': data['message'], 'image': data['image']});
+                    'message': data['message'], 'image': data['image'], 'user_id': user_id['id']});
 
 
 @cn.connection_handler
-def add_new_answer_to_table(cursor, data):
-    query = f"""INSERT INTO answer (submission_time, vote_number, question_id, message, image)
+def add_new_answer_to_table(cursor, data, username):
+    user_id = get_user_id_by_username(username)
+    query = f"""INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id)
             VALUES ('{data["submission_time"]}', '{data["vote_number"]}', '{data["question_id"]}', 
-                    '{data["message"]}', '{data["image"]}');"""
+                    '{data["message"]}', '{data["image"]}', '{user_id["id"]}');"""
     cursor.execute(query)
 
 
@@ -88,7 +93,8 @@ def display_latest_questions(cursor):
 
 @cn.connection_handler
 def get_all_comments_to_a_question(cursor, question_id):
-    query = f"""SELECT submission_time, message, id FROM comment
+    query = f"""SELECT submission_time, message, comment.id, users.name FROM comment
+            JOIN users ON users.id = comment.user_id
             WHERE question_id={question_id}"""
     cursor.execute(query)
     comments_to_a_question = cursor.fetchall()
@@ -96,12 +102,11 @@ def get_all_comments_to_a_question(cursor, question_id):
 
 
 @cn.connection_handler
-def add_comment_to_question(cursor, data):
-    comment_id = generate_comment_id()
-    data["id"] = comment_id
-    query = f"""INSERT INTO comment (question_id, id, message, submission_time)
-                VALUES ('{data["question_id"]}', '{data["id"]}', '{data["comment"]}', 
-                        '{data["submission_time"]}')"""
+def add_comment_to_question(cursor, data, username):
+    user_id = get_user_id_by_username(username)
+    query = f"""INSERT INTO comment (question_id, message, submission_time, user_id)
+                VALUES ('{data["question_id"]}', '{data["comment"]}', 
+                        '{data["submission_time"]}', '{user_id["id"]}')"""
 
     cursor.execute(query)
 
@@ -157,7 +162,9 @@ def get_question_id_by_comment_id(cursor, comment_id):
 
 @cn.connection_handler
 def sort_questions(cursor, order_by, order_direction):
-    query = f"SELECT * FROM question ORDER BY {order_by} {order_direction}"
+    query = f"""SELECT question.*, users.name FROM question
+            JOIN users ON users.id = question.user_id 
+            ORDER BY {order_by} {order_direction}"""
     cursor.execute(query)
     data = cursor.fetchall()
     return data
@@ -204,3 +211,13 @@ def search_from_questions(cursor, search_phrase):
     cursor.execute(query)
     search_result = cursor.fetchall()
     return search_result
+
+
+@cn.connection_handler
+def get_user_id_by_username(cursor, username):
+    cursor.execute("""SELECT id FROM users
+                    WHERE name = %(username)s""", {'username': username})
+    user_name =cursor.fetchone()
+    return user_name
+
+
