@@ -14,6 +14,7 @@ def verify_password(plain_text_password, hashed_password):
     return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
 
 
+
 @cn.connection_handler
 def display_table(cursor, table):
     query = f"""SELECT * FROM {table}"""
@@ -190,7 +191,16 @@ def husszonnégytonnakokain(cursor):
 
 @cn.connection_handler
 def login_user(cursor, username):
-    cursor.execute("""SELECT password from users 
-     where name = %(username)s""", {'username': username})
+    cursor.execute("""SELECT password FROM users 
+    WHERE name = %(username)s""", {'username': username})
     hashed_pass = cursor.fetchone()
     return hashed_pass
+
+
+@cn.connection_handler
+def search_from_questions(cursor, search_phrase):
+    query = f"""SELECT * FROM question
+    WHERE title LIKE '%{search_phrase}%' OR message LIKE '%{search_phrase}%'"""
+    cursor.execute(query)
+    search_result = cursor.fetchall()
+    return search_result

@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    {% for result in results %}
+        <table class="front_page_table">
+        <tr>
+            <th><a href="/question/{{ result['id'] }}">{{ result['title'] }}</a></th>
+        </tr>
+        <tr>
+            <td class="extra_data">{{ result['submission_time'] }}</td>
+        </tr>
+        <tr>
+        <td class="extra_data">Views: {{ result['view_number'] }}
+            Votes: {{ result['vote_number'] }}</td>
+        </table>
+    {% endfor %}
+{% include 'footer.html' %}
+{% endblock %}

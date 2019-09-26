@@ -1,24 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, session, escape, make_response
+import psycopg2
+from flask import Flask, render_template, request, redirect, url_for, make_response
 import data_manager as dm
 
 
 app = Flask(__name__)
-OPTIONS = {
-    "View": "view_number",
-    "Vote": "vote_number",
-    "Title": "title",
-    "Date": "submission_time",
-    "Descending": "DESC",
-    "Ascending": "ASC",
-}
-app.secret_key = b'GULAG'
 
 
 @app.route('/')
 @app.route('/list', methods=['GET', 'POST'])
 def route_list():
-    order_direction = OPTIONS[request.form.get("order_direction", "Descending")]
-    order_by = OPTIONS[request.form.get("order_by", "Date")]
+    order_direction = request.form.get("order_direction", "DESC")
+    order_by = request.form.get("order_by", "submission_time")
     sorted_questions = dm.sort_questions(order_by, order_direction)
     return render_template('list.html', questions=sorted_questions)
 
@@ -105,11 +97,14 @@ def route_register_page():
 @app.route('/register', methods=['POST'])
 def route_register():
     username = request.form.get("username")
-    password = request.form.get("password")
-    print(username, password)
-    hashed_pw = dm.hash_password(password)
-    dm.register_user(username, hashed_pw)
-    return redirect(url_for('route_list'))
+    try:
+        password = request.form.get("password")
+        hashed_pw = dm.hash_password(password)
+        dm.register_user(username, hashed_pw)
+        return redirect(url_for('route_list'))
+    except psycopg2.IntegrityError:
+        error_message = "Username already exists, please choose another one!"
+        return render_template('register.html', error=error_message)
 
 
 @app.route('/list_users')
@@ -124,11 +119,14 @@ def route_login():
     password = request.form.get("password")
     valid_pass = dm.login_user(username)
     verification = dm.verify_password(password, valid_pass)
-    if verification is True:
+    if verification:
         redirect_to_index = redirect('/')
         response = make_response(redirect_to_index)
         response.set_cookie('username', value=username)
         return response
+    else:
+        error_message = "Invalid username or password!"
+        return redirect(url_for('route_list', error=error_message))
 
 
 @app.route('/log_out', methods=["POST"])
@@ -136,6 +134,13 @@ def route_logout():
     resp = make_response(redirect(url_for('route_list')))
     resp.set_cookie('username', '', expires=0)
     return resp
+
+
+@app.route('/search', methods=["POST"])
+def route_search():
+    search_phrase = request.form.get("search_phrase")
+    search_result = dm.search_from_questions(search_phrase)
+    return render_template('search.html', results=search_result)
 
 
 if __name__ == '__main__':

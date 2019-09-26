@@ -1,22 +1,27 @@
 {% extends "layout.html" %}
 
 {% block content %}
+
     <p>
     <div>
         <form action="/list" method="POST">
             <select class="sort1" name="order_by">
-                <option value="Date">Date</option>
-                <option value="Vote">Vote</option>
-                <option value="View">View</option>
-                <option value="Title">Title</option>
+                <option value="submission_time">Date</option>
+                <option value="vote_number">Vote</option>
+                <option value="view_number">View</option>
+                <option value="title">Title</option>
             </select>
             <select class="sort2" name="order_direction">
-                <option value="Ascending">Ascending</option>
-                <option value="Descending">Descending</option>
+                <option value="ASC">Ascending</option>
+                <option value="DESC">Descending</option>
             </select>
             <button type="submit">Sort</button>
         </form>
     </div>
+    <form action="/search" method="POST">
+        <input type="text" name="search_phrase" placeholder="Type here" required>
+        <button type="submit">Search</button>
+    </form>
     </p>
     <a href="{{ url_for('route_list_users') }}"><strong>All Users</strong></a>
 
