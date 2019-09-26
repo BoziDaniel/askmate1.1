@@ -29,10 +29,25 @@ body {
 
 tr {
     text-align: left;
+    border-color: red;
+    border-width: 5px
 }
 
 button {
     margin-top: 10px;
+}
+
+
+.all_comrades{
+        border-color: red;
+        border-width: 3px;
+        border-style: solid;
+        background-color: red;
+        color: yellow;
+}
+
+#asd {
+    color: yellow;
 }
 
 #back {
@@ -51,41 +66,58 @@ button {
 }
 
 .sort1 {
-    margin-top: 10px;
-    margin-left: 60%;
+    margin-left: 50%;
 }
 
 .sort2 {
     margin-top: 10px;
 }
 
+.sort3{
+    margin-top: 10px;
+    margin-left: 66%;
+}
+
 .button1 {
     color: white;
     position: relative;
-    top: 10px;
-    right: 15%;
     padding: 6px 11px;
     background-color: #8f8f8f;
     border-radius: 6px;
     border: black 2px solid;
-    margin-top: 10px;
-    margin-left: 30%;
+
 }
 
 
 .button2 {
     color: white;
     position: relative;
-    top: 10px;
-    right: 15%;
     padding: 6px 11px;
     background-color: #8f8f8f;
     border-radius: 6px;
     border: black 2px solid;
-    margin-top: 10px;
+}
+.button3{
+    color: white;
+    position: relative;
+
+    padding: 6px 11px;
+    background-color: #8f8f8f;
+    border-radius: 6px;
+    border: black 2px solid;
+
 }
 
+
 .header {
+    padding: 15px;
+    background-color: red;
+    color: yellow;
+    font-style: italic;
+    font-variant: small-caps;
+}
+
+.header2{
     padding: 15px;
     background-color: red;
     color: yellow;

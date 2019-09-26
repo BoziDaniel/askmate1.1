@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
+    <h4>All Comrades</h4>
     <table>
-    {% for user in users %}
-        <tr>
-            <td>{{ user["name"] }}</td>
-            <td>{{ user["date"] }}</td>
-        </tr>
-    {% endfor %}
+        {% for user in users %}
+            <tr  class="all_comrades">
+                <td class="all_comrades"><strong>{{ user["name"] }}</strong></td>
+                <td class="all_comrades">{{ user["date"] }}</td>
+            </tr>
+        {% endfor %}
     </table>
     {% include 'footer.html' %}
 {% endblock %}
